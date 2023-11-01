@@ -7,6 +7,14 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
 
     flatDir {
         dirs 'libs'
@@ -14,10 +22,22 @@ repositories {
 }
 
 dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly name: "GermPlugin-4.2.9"
+
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
     useJUnitPlatform()
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
 }
