@@ -1,4 +1,4 @@
-package com.sakurarealm.recipecraft.layer1.subuistate;
+package com.sakurarealm.recipecraft.layer1.subinterface;
 
 import com.sakurarealm.recipecraft.layer0.UIState;
 import com.sakurarealm.recipecraft.layer1.subinterface.Brewing;
