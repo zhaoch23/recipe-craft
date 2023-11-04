@@ -1,0 +1,5 @@
+rootProject.name = 'recipe-craft'
+
+include "gui"
+include "recipesystem"
+include "plugin"

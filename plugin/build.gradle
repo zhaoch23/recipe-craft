@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+dependencies {
+    compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
+    implementation implementation(project(':gui',))
+    implementation(project(":recipesystem"))
+}
+
+shadowJar {
+    archiveBaseName.set(rootProject.name)
+    archiveVersion.set(rootProject.version)
+    archiveClassifier.set('')
+    exclude("META-INF/maven/**")
+    exclude("META-INF/tf/**")
+    exclude("**/test/**")
+}
+
+

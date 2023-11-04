@@ -1,5 +1,5 @@
 name: recipe-craft
 version: "${version}"
-main: com.sakurarealm.recipecraft.bukkit.RecipeCraftPlugin
+main: com.sakurarealm.recipecraft.RecipeCraftPlugin
 depend:
   - GermPlugin
