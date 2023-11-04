@@ -4,10 +4,10 @@ plugins {
 }
 
 group = 'com.sakurarealm.recipecraft'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 def localDependencies = [
-        'GermPlugin-4.2.9',
+        //'GermPlugin-4.2.9',
 ]
 
 subprojects {
@@ -23,10 +23,6 @@ subprojects {
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/groups/public/"
-        }
-
-        flatDir {
-            dirs '../libs'
         }
     }
 

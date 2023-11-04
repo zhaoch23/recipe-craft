@@ -5,8 +5,8 @@ plugins {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
-    implementation implementation(project(':gui',))
-    implementation(project(":recipesystem"))
+    implementation(project(':subprojects:gui',))
+    implementation(project(":subprojects:recipesystem"))
 }
 
 shadowJar {

@@ -1,3 +1,5 @@
+package com.sakurarealm.recipecraft;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RecipeCraftPlugin extends JavaPlugin {
