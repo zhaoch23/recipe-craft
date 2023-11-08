@@ -4,7 +4,35 @@ import com.sakurarealm.recipecraft.layer0.Interface;
 
 @Override
 public interface Forging extends Interface {
-    String state = "idle";
 
+    String[] states = {"idle", "ready", "forging", "done"};
+    UIState uiState = new UIState("idle");
+    Screen screen = new ForgingScreen("idle");
+
+    @override
+    public UIState getState() {
+        return this.uiState;
+    }
+
+    @override
+    public UIState nextState() {
+
+        if (this.uiState.getState() == "idle") {
+            this.uiState.setState("ready");
+        } else if (this.uiState.getState() == "ready") {
+            this.uiState.setState("forging");
+        } else if (this.uiState.getState() == "forging") {
+            this.uiState.setState("done");
+        } else if (this.uiState.getState() == "done") {
+            this.uiState.setState("idle");
+        }
+
+        return this.uiState;
+    }
+
+    public Screen getScreen() {
+        this.screen.update(uiState);
+        return this.screen;
+    }
     
 }
