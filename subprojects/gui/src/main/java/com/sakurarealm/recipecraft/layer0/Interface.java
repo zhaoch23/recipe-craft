@@ -9,5 +9,9 @@ public abstract interface Interface {
     public default String getState() {
         return state;
     }
+    
+    public default void setState(String state) {
+        this.state = state;
+    }
 
 }
