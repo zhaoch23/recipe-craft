@@ -2,17 +2,13 @@ package com.sakurarealm.recipecraft.layer0;
 
 public abstract interface Interface {
 
-    String[] states;
-
-    public String[] getStates() {
-        return this.states;
+    public static void getStates() {
     }
 
-    public default void getState() {
-
+    public static void getState() {
     }
 
-    public default void nextState() {
+    public static void nextState() {
     }
 
 }

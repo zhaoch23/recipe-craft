@@ -1,6 +1,7 @@
 package com.sakurarealm.recipecraft.layer1;
 
 import com.sakurarealm.recipecraft.layer0.Interface;
+import com.sakurarealm.recipecraft.layer0.UIState;
 
 public interface Brewing extends Interface {
 
@@ -9,29 +10,29 @@ public interface Brewing extends Interface {
     Screen screen = new BrewingScreen("idle");
 
     @override
-    public UIState getState() {
-        return this.uiState;
+    public static UIState getState() {
+        return uiState;
     }
 
     @override
-    public UIState nextState() {
+    public static UIState nextState() {
 
-        if (this.uiState.getState() == "idle") {
-            this.uiState.setState("ready");
-        } else if (this.uiState.getState() == "ready") {
-            this.uiState.setState("brewing");
-        } else if (this.uiState.getState() == "brewing") {
-            this.uiState.setState("done");
-        } else if (this.uiState.getState() == "done") {
-            this.uiState.setState("idle");
+        if (uiState.getState() == "idle") {
+            uiState.setState("ready");
+        } else if (uiState.getState() == "ready") {
+            uiState.setState("brewing");
+        } else if (uiState.getState() == "brewing") {
+            uiState.setState("done");
+        } else if (uiState.getState() == "done") {
+            uiState.setState("idle");
         }
 
-        return this.uiState;
+        return uiState;
     }
 
-    public Screen getScreen() {
-        this.screen.update(uiState);
-        return this.screen;
+    public static Screen getScreen() {
+        screen.update(uiState);
+        return screen;
     }
 
 }
