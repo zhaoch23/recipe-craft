@@ -1,7 +1,7 @@
 package com.sakurarealm.recipecraft;
 
+import com.sakurarealm.recipecraft.material.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ public interface RecipeParser {
 
     int getRecipeId(Recipe recipe);
 
-    int getRecipeId(List<ItemStack> itemStacks);
+    int getRecipeId(List<Material> materials);
 
 }

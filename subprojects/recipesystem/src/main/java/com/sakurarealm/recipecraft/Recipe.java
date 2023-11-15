@@ -1,15 +1,16 @@
 package com.sakurarealm.recipecraft;
 
-import org.bukkit.inventory.ItemStack;
+import com.sakurarealm.recipecraft.material.Material;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Recipe {
 
     String getRecipeName();
 
-    List<ItemStack> getRecipeItems();
+    List<Material> getRecipeMaterials();
 
-    ItemStack build(List<ItemStack> itemStacks);
+    Optional<Material> build(List<Material> Materials);
 
 }
