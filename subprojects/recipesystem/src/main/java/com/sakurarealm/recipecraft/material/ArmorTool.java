@@ -5,7 +5,7 @@ import com.sakurarealm.recipecraft.material.enums.EnumSlot;
 
 import java.util.Optional;
 
-public interface Equipment extends AttributeMaterial {
+public interface ArmorTool extends RPGAttributes {
 
     @Override
     default boolean isAttributeActive() {
@@ -18,12 +18,12 @@ public interface Equipment extends AttributeMaterial {
 
     int repairDurability();
 
-    Optional<AttributeMaterial[]> getMaterials();
+    Optional<RPGAttributes[]> getMaterials();
 
-    Optional<AttributeMaterial[]> getRepairMaterials();
+    Optional<RPGAttributes[]> getRepairMaterials();
 
-    Optional<AttributeMaterial[]> getDecompositionMaterials();
+    Optional<RPGAttributes[]> getDecompositionMaterials();
 
-    Optional<AttributeMaterial[]> getBrokenMaterials();
+    Optional<RPGAttributes[]> getBrokenMaterials();
 
 }

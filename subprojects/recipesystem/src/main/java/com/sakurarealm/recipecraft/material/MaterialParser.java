@@ -8,4 +8,6 @@ public interface MaterialParser {
 
     Optional<Material> parse(ItemStack itemStack);
 
+    Optional<ItemStack> dump(Material material);
+
 }

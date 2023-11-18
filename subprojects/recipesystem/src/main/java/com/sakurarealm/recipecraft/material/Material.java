@@ -13,7 +13,7 @@ public interface Material {
 
     EnumRarity getRarity();
 
-    MaterialTags[] getTags();
+    MaterialTag[] getTags();
 
     Optional<TextCompound[]> getDescription();
 

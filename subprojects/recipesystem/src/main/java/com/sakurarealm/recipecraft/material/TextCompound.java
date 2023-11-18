@@ -1,43 +1,146 @@
 package com.sakurarealm.recipecraft.material;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 
-public interface TextCompound {
+public class TextCompound {
 
-    String getText();
+    String text;
 
-    void setText(String text);
+    ChatColor color;
 
-    Color getColor();
+    boolean bold;
 
-    void setColor(Color color);
+    boolean italic;
 
-    boolean isBold();
+    boolean underlined;
 
-    void setBold(boolean bold);
+    boolean strikethrough;
 
-    boolean isItalic();
+    String prefix;
 
-    void setItalic(boolean italic);
+    String suffix;
 
-    boolean isUnderlined();
+    boolean newLineChar = false;
 
-    void setUnderlined(boolean underlined);
+    public TextCompound(String text, ChatColor color, boolean bold, boolean italic, boolean underlined, boolean strikethrough, String prefix, String suffix) {
+        this.text = text;
+        this.color = color;
+        this.bold = bold;
+        this.italic = italic;
+        this.underlined = underlined;
+        this.strikethrough = strikethrough;
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
 
-    boolean isStrikethrough();
+    private TextCompound() {
+        this.newLineChar = true;
+    }
 
-    void setStrikethrough(boolean strikethrough);
+    public static TextCompound NewLineChar() {
+        return new TextCompound();
+    }
 
-    String getPrefix();
+    public String getText() {
+        return null;
+    }
 
-    void setPrefix(String prefix);
+    public void setText(String text) {
+        this.text = text;
+    }
 
-    String getSuffix();
+    public ChatColor getColor() {
+        return this.color;
+    }
 
-    void setSuffix(String suffix);
+    public void setColor(ChatColor color) {
+        this.color = color;
+    }
 
-    void set(TextCompound textCompound);
+    public boolean isBold() {
+        return bold;
+    }
 
-    TextCompound clone();
+    public void setBold(boolean bold) {
+        this.bold = bold;
+    }
+
+    public boolean isItalic() {
+        return italic;
+    }
+
+    public void setItalic(boolean italic) {
+        this.italic = italic;
+    }
+
+    public boolean isUnderlined() {
+        return underlined;
+    }
+
+    public void setUnderlined(boolean underlined) {
+        this.underlined = underlined;
+    }
+
+    public boolean isStrikethrough() {
+        return strikethrough;
+    }
+
+    public void setStrikethrough(boolean strikethrough) {
+        this.strikethrough = strikethrough;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public boolean isNewLineChar() {
+        return this.newLineChar;
+    }
+
+    public TextCompound clone() {
+        return new TextCompound(
+                text,
+                color,
+                bold,
+                italic,
+                underlined,
+                strikethrough,
+                prefix,
+                suffix
+        );
+    }
+
+    public String toString() {
+        return prefix +
+                color +
+                getTextFormatCode() +
+                text +
+                ChatColor.RESET +
+                suffix;
+    }
+
+    public int getLength() {
+        return text.length() + prefix.length() + suffix.length();
+    }
+
+    public String getTextFormatCode() {
+        return "" + (bold ? ChatColor.BOLD : "") +
+                (italic ? ChatColor.ITALIC : "") +
+                (underlined ? ChatColor.UNDERLINE : "") +
+                (strikethrough ? ChatColor.STRIKETHROUGH : "");
+    }
+
 
 }

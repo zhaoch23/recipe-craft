@@ -1,6 +1,7 @@
 package com.sakurarealm.recipecraft.material.enums;
 
 import com.sakurarealm.recipecraft.material.TextCompound;
+import org.bukkit.ChatColor;
 
 public enum EnumRarity {
     One(1),
@@ -17,7 +18,7 @@ public enum EnumRarity {
         this.rarity = rarity;
     }
 
-    public static EnumRarity getRarity(int rarity) {
+    public static EnumRarity of(int rarity) {
         switch (rarity) {
             case 2:
                 return Two;
@@ -37,6 +38,6 @@ public enum EnumRarity {
     }
 
     public TextCompound getDisplayName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new TextCompound(String.valueOf(this), ChatColor.WHITE, false, false, false, false, "", "");
     }
 }

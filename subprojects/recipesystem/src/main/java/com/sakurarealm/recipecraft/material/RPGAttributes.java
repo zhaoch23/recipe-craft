@@ -2,7 +2,7 @@ package com.sakurarealm.recipecraft.material;
 
 import java.util.Map;
 
-public interface AttributeMaterial extends Material {
+public interface RPGAttributes {
 
     Map<String, Double> getAttributes();
 
