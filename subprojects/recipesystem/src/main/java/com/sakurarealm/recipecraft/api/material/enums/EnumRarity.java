@@ -1,9 +1,9 @@
-package com.sakurarealm.recipecraft.material.enums;
+package com.sakurarealm.recipecraft.api.material.enums;
 
-import com.sakurarealm.recipecraft.material.TextCompound;
+import com.sakurarealm.recipecraft.api.material.TextCompound;
 import org.bukkit.ChatColor;
 
-public enum EnumRarity {
+public enum EnumRarity { // TODO: 2023/11/14 zhaoch23 we will rename these later
     One(1),
     Two(2),
     Three(3),

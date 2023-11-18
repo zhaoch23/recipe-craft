@@ -1,10 +1,10 @@
 package com.sakurarealm.recipecraft.recipecraft.material;
 
-import com.sakurarealm.recipecraft.material.Material;
-import com.sakurarealm.recipecraft.material.MaterialParser;
-import com.sakurarealm.recipecraft.material.MaterialTag;
-import com.sakurarealm.recipecraft.material.TextCompound;
-import com.sakurarealm.recipecraft.material.enums.EnumRarity;
+import com.sakurarealm.recipecraft.api.material.RPGMaterial;
+import com.sakurarealm.recipecraft.api.material.RPGMaterialParser;
+import com.sakurarealm.recipecraft.api.material.RPGMaterialTag;
+import com.sakurarealm.recipecraft.api.material.TextCompound;
+import com.sakurarealm.recipecraft.api.material.enums.EnumRarity;
 import com.sakurarealm.recipecraft.utils.LoreBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class SimpleMaterial implements Material, MaterialParser {
+public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
 
     String name;
 
@@ -23,7 +23,7 @@ public class SimpleMaterial implements Material, MaterialParser {
 
     EnumRarity rarity;
 
-    List<MaterialTag> tags = new ArrayList<>();
+    List<RPGMaterialTag> tags = new ArrayList<>();
 
     List<TextCompound> description = new ArrayList<>();
 
@@ -42,10 +42,85 @@ public class SimpleMaterial implements Material, MaterialParser {
         this.bukkitMaterial = bukkitMaterial;
     }
 
+    public SimpleMaterial(String name, EnumRarity rarity, org.bukkit.Material bukkitMaterial, String... descriptions) {
+        this.name = name;
+        this.displayName = new TextCompound(name, ChatColor.GREEN, false, false, false, false, "", "");
+        this.rarity = rarity;
+        this.bukkitMaterial = bukkitMaterial;
+        if (descriptions.length > 0) {
+            addDescription(new TextCompound(descriptions[0], ChatColor.GRAY, false, false, false, false, "", ""));
+        }
+        if (descriptions.length > 1) {
+            addShiftDescription(new TextCompound(descriptions[1], ChatColor.GRAY, false, false, false, false, "", ""));
+        }
+        if (descriptions.length > 2) {
+            addCtrlDescription(new TextCompound(descriptions[2], ChatColor.GRAY, false, false, false, false, "", ""));
+        }
+        if (descriptions.length > 3) {
+            addHiddenDescription(new TextCompound(descriptions[3], ChatColor.GRAY, false, false, false, false, "", ""));
+        }
+    }
+
     private SimpleMaterial() {
     }
 
-    void addTags(MaterialTag... tags) {
+    public static Optional<RPGMaterial> of(ItemStack itemStack) {
+        return new SimpleMaterial().parse(itemStack);
+    }
+
+    public static RPGMaterialParser SimpleMaterialParser() {
+        return new SimpleMaterial();
+    }
+
+    public static RPGMaterial TestMaterial() {
+        SimpleMaterial material = new SimpleMaterial(
+                "test",
+                new TextCompound(
+                        "test description",
+                        ChatColor.WHITE,
+                        true, false, false, false,
+                        "", ""
+                ),
+                EnumRarity.One,
+                org.bukkit.Material.COAL
+        );
+        material.addTags(RPGMaterialTag.ANY);
+        material.addDescription(
+                new TextCompound(
+                        "test description",
+                        ChatColor.WHITE,
+                        true, false, false, false,
+                        "", ""
+                )
+        );
+        material.addShiftDescription(
+                new TextCompound(
+                        "shift description",
+                        ChatColor.WHITE,
+                        false, false, false, false,
+                        "", ""
+                )
+        );
+        material.addCtrlDescription(
+                new TextCompound(
+                        "ctrl description",
+                        ChatColor.WHITE,
+                        false, false, true, false,
+                        "", ""
+                )
+        );
+        material.addHiddenDescription(
+                new TextCompound(
+                        "hidden description",
+                        ChatColor.WHITE,
+                        false, false, false, false,
+                        "", ""
+                )
+        );
+        return material;
+    }
+
+    void addTags(RPGMaterialTag... tags) {
         this.tags.addAll(Arrays.asList(tags));
     }
 
@@ -85,10 +160,6 @@ public class SimpleMaterial implements Material, MaterialParser {
         this.hiddenDescription.clear();
     }
 
-    void setBukkitMaterial(org.bukkit.Material bukkitMaterial) {
-        this.bukkitMaterial = bukkitMaterial;
-    }
-
     @Override
     public String getName() {
         return name;
@@ -109,7 +180,7 @@ public class SimpleMaterial implements Material, MaterialParser {
 
     @Override
     public EnumRarity getRarity() {
-        return null;
+        return rarity;
     }
 
     void setRarity(EnumRarity rarity) {
@@ -117,8 +188,8 @@ public class SimpleMaterial implements Material, MaterialParser {
     }
 
     @Override
-    public MaterialTag[] getTags() {
-        return tags.toArray(new MaterialTag[0]);
+    public RPGMaterialTag[] getTags() {
+        return tags.toArray(new RPGMaterialTag[0]);
     }
 
     @Override
@@ -139,10 +210,10 @@ public class SimpleMaterial implements Material, MaterialParser {
 
     @Override
     public Optional<TextCompound[]> getCtrlDescription() {
-       if (ctrlDescription.isEmpty()) {
-           return Optional.empty();
-       }
-       return Optional.of(ctrlDescription.toArray(new TextCompound[0]));
+        if (ctrlDescription.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(ctrlDescription.toArray(new TextCompound[0]));
     }
 
     @Override
@@ -161,9 +232,13 @@ public class SimpleMaterial implements Material, MaterialParser {
         return Optional.of(bukkitMaterial);
     }
 
+    void setBukkitMaterial(org.bukkit.Material bukkitMaterial) {
+        this.bukkitMaterial = bukkitMaterial;
+    }
+
     @Override
     public Optional<ItemStack> getBukkitItemStack() {
-        return dump(this);
+        return toItemStack(this);
     }
 
     @Override
@@ -171,7 +246,7 @@ public class SimpleMaterial implements Material, MaterialParser {
         return Optional.empty();
     }
 
-    protected void dumpDescriptionsToLore(String flag, Optional<TextCompound[]> descriptions, List<String> lore) {
+    protected void descriptionsToLore(String flag, Optional<TextCompound[]> descriptions, List<String> lore) {
         if (descriptions.isPresent()) {
             lore.add("");
             if (flag != null)
@@ -186,12 +261,22 @@ public class SimpleMaterial implements Material, MaterialParser {
     }
 
     @Override
-    public Optional<Material> parse(ItemStack itemStack) {
+    public Optional<RPGMaterial> parse(ItemStack itemStack) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<ItemStack> dump(Material material) {
+    public Optional<RPGMaterial> parse(String string) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> toSerializedString(RPGMaterial material) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ItemStack> toItemStack(RPGMaterial material) {
         if (bukkitMaterial == null || bukkitMaterial == org.bukkit.Material.AIR) {
             return Optional.empty();
         }
@@ -210,77 +295,21 @@ public class SimpleMaterial implements Material, MaterialParser {
 
         // Tags
         StringBuilder tags = new StringBuilder();
-        for (MaterialTag materialTag : getTags()) {
+        for (RPGMaterialTag materialTag : getTags()) {
             tags.append(materialTag.getDisplayName().toString()).append(" ");
         }
         lore.add(tags.toString());
 
         // Descriptions
-        dumpDescriptionsToLore(null, getDescription(), lore);
-        dumpDescriptionsToLore("shift", getShiftDescription(), lore);
-        dumpDescriptionsToLore("ctrl", getCtrlDescription(), lore);
-        dumpDescriptionsToLore("hidden", getHiddenDescription(), lore);
+        descriptionsToLore(null, getDescription(), lore);
+        descriptionsToLore("shift", getShiftDescription(), lore);
+        descriptionsToLore("ctrl", getCtrlDescription(), lore);
+        descriptionsToLore("hidden", getHiddenDescription(), lore);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
         return Optional.of(itemStack);
-    }
-
-    public static Optional<Material> of(ItemStack itemStack) {
-        return new SimpleMaterial().parse(itemStack);
-    }
-
-    public static MaterialParser SimpleMaterialParser() {
-        return new SimpleMaterial();
-    }
-
-    public static Material TestMaterial() {
-        SimpleMaterial material = new SimpleMaterial(
-                "test",
-                new TextCompound(
-                        "test description",
-                        ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
-                ),
-                EnumRarity.One,
-                org.bukkit.Material.STONE
-        );
-        material.addTags(MaterialTag.ANY);
-        material.addDescription(
-                new TextCompound(
-                        "test description",
-                        ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
-                )
-        );
-        material.addShiftDescription(
-                new TextCompound(
-                        "shift description",
-                        ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
-                )
-        );
-        material.addCtrlDescription(
-                new TextCompound(
-                        "ctrl description",
-                        ChatColor.WHITE,
-                        false, false, true, false,
-                        "", ""
-                )
-        );
-        material.addHiddenDescription(
-                new TextCompound(
-                        "hidden description",
-                        ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
-                )
-        );
-        return material;
     }
 
 }

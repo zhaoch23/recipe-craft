@@ -1,4 +1,4 @@
-package com.sakurarealm.recipecraft.recipe;
+package com.sakurarealm.recipecraft.api.recipe;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 

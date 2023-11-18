@@ -1,6 +1,6 @@
 rootProject.name = 'recipe-craft'
 
-include "subprojects:gui"
+//include "subprojects:gui"
 include "subprojects:recipesystem"
 include "subprojects:recipesystem-impl"
 include "plugin"

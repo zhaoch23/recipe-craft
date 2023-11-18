@@ -1,22 +1,83 @@
 package com.sakurarealm.recipecraft.recipecraft.material;
 
-import com.sakurarealm.recipecraft.material.MaterialTag;
-import com.sakurarealm.recipecraft.material.RPGAttributes;
-import com.sakurarealm.recipecraft.material.TextCompound;
-import com.sakurarealm.recipecraft.material.enums.EnumRarity;
+import com.sakurarealm.recipecraft.api.material.*;
+import com.sakurarealm.recipecraft.api.material.enums.EnumRarity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
-public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttributes {
+public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttributeMaterial {
 
-    private final Map<String, Double> attributes = new HashMap<>();
+    protected final Map<String, Double> attributes = new HashMap<>();
+
+    protected final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public SimpleAttributeMaterial(String name, TextCompound displayName, EnumRarity rarity, Material bukkitMaterial) {
         super(name, displayName, rarity, bukkitMaterial);
+    }
+
+    private SimpleAttributeMaterial() {
+        super("", null, null, Material.AIR);
+    }
+
+    public static RPGMaterialParser SimpleAttributeMaterialParser() {
+        return new SimpleAttributeMaterial();
+    }
+
+    public static SimpleAttributeMaterial TestAttributeMaterial() {
+        SimpleAttributeMaterial material = new SimpleAttributeMaterial(
+                "test",
+                new TextCompound(
+                        "test description",
+                        ChatColor.WHITE,
+                        true, false, false, false,
+                        "", ""
+                ),
+                EnumRarity.One,
+                org.bukkit.Material.COAL
+        );
+        material.addTags(RPGMaterialTag.ANY);
+        material.addDescription(
+                new TextCompound(
+                        "test description",
+                        ChatColor.WHITE,
+                        true, false, false, false,
+                        "", ""
+                )
+        );
+        material.addShiftDescription(
+                new TextCompound(
+                        "shift description",
+                        ChatColor.WHITE,
+                        false, false, false, false,
+                        "", ""
+                )
+        );
+        material.addCtrlDescription(
+                new TextCompound(
+                        "ctrl description",
+                        ChatColor.WHITE,
+                        false, false, true, false,
+                        "", ""
+                )
+        );
+        material.addHiddenDescription(
+                new TextCompound(
+                        "hidden description",
+                        ChatColor.WHITE,
+                        false, false, false, false,
+                        "", ""
+                )
+        );
+
+        material.addAttribute("TestAttributeOne", 1.0);
+        material.addAttribute("TestAttributeTwo", 2.0);
+
+        return material;
     }
 
     public void addAttribute(String name, double value) {
@@ -46,7 +107,7 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
     }
 
     @Override
-    public Optional<ItemStack> dump(com.sakurarealm.recipecraft.material.Material material) {
+    public Optional<ItemStack> toItemStack(RPGMaterial material) {
         if (bukkitMaterial == null || bukkitMaterial == org.bukkit.Material.AIR) {
             return Optional.empty();
         }
@@ -65,7 +126,7 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
 
         // Tags
         StringBuilder tags = new StringBuilder();
-        for (MaterialTag materialTag : getTags()) {
+        for (RPGMaterialTag materialTag : getTags()) {
             tags.append(materialTag.getDisplayName().toString()).append(" ");
         }
         lore.add(tags.toString());
@@ -77,10 +138,10 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
         }
 
         // Descriptions
-        dumpDescriptionsToLore(null, getDescription(), lore);
-        dumpDescriptionsToLore("shift", getShiftDescription(), lore);
-        dumpDescriptionsToLore("ctrl", getCtrlDescription(), lore);
-        dumpDescriptionsToLore("hidden", getHiddenDescription(), lore);
+        descriptionsToLore(null, getDescription(), lore);
+        descriptionsToLore("shift", getShiftDescription(), lore);
+        descriptionsToLore("ctrl", getCtrlDescription(), lore);
+        descriptionsToLore("hidden", getHiddenDescription(), lore);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -89,8 +150,7 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
     }
 
     protected String getAttributeLore(String name, double value) {
-        return ChatColor.GREEN + name + " " + ChatColor.GRAY + value;
+        return ChatColor.GREEN + name + " " + ChatColor.GRAY + decimalFormat.format(value);
     }
-
 
 }

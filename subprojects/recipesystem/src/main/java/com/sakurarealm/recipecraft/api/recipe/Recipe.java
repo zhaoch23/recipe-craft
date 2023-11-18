@@ -1,6 +1,6 @@
-package com.sakurarealm.recipecraft.recipe;
+package com.sakurarealm.recipecraft.api.recipe;
 
-import com.sakurarealm.recipecraft.material.Material;
+import com.sakurarealm.recipecraft.api.material.RPGMaterial;
 
 import java.util.Optional;
 
@@ -18,6 +18,6 @@ public interface Recipe extends Comparable<Recipe> {
      *
      * @return the crafted material
      */
-    Optional<Material> build();
+    Optional<RPGMaterial> build();
 
 }

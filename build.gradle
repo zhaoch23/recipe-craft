@@ -10,6 +10,7 @@ def localDependencies = [
         //'GermPlugin-4.2.9',
 ]
 
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'com.github.johnrengelman.shadow'
@@ -28,10 +29,6 @@ subprojects {
 
     dependencies {
         compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
-
-        localDependencies.forEach {
-            compileOnly name: it
-        }
 
         testImplementation platform('org.junit:junit-bom:5.9.1')
         testImplementation 'org.junit.jupiter:junit-jupiter'

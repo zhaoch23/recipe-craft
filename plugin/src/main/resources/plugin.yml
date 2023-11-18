@@ -1,5 +1,10 @@
 name: recipe-craft
 version: "${version}"
 main: com.sakurarealm.recipecraft.RecipeCraftPlugin
-depend:
-  - GermPlugin
+
+commands:
+  rtest:
+    description: test
+    usage: /<command>
+    permission: recipecraft.test
+    aliases: [ rt ]

@@ -1,15 +1,9 @@
-package com.sakurarealm.recipecraft.material;
+package com.sakurarealm.recipecraft.api.material;
 
 import org.bukkit.ChatColor;
 
-public enum MaterialTag {
-    ANY("any", TagTextCompound("any", 0), 0);
-
-    private static final MaterialTag[] VALUES = values();
-
-    private final String name;
-    private final int priority;
-    private TextCompound displayName;
+public class RPGMaterialTag {
+    public final static RPGMaterialTag ANY = new RPGMaterialTag("any", 0);
     private static final ChatColor[] PriorityColor = {
             ChatColor.WHITE,
             ChatColor.GREEN,
@@ -19,6 +13,16 @@ public enum MaterialTag {
             ChatColor.DARK_RED,
             ChatColor.DARK_PURPLE
     };
+    private final String name;
+    private final int priority;
+    private final TextCompound displayName;
+
+
+    private RPGMaterialTag(String name, int priority) {
+        this.name = name;
+        this.displayName = TagTextCompound(name, priority);
+        this.priority = priority;
+    }
 
     public String getName() {
         return name;
@@ -32,15 +36,9 @@ public enum MaterialTag {
         return priority;
     }
 
-    private MaterialTag(String name, TextCompound displayName, int priority) {
-        this.name = name;
-        this.displayName = displayName;
-        this.priority = priority;
-    }
-
-    private static TextCompound TagTextCompound(String name, int priority) {
+    private TextCompound TagTextCompound(String name, int priority) {
         return new TextCompound(
-                '[' + name + ']',
+                "[" + name + "]",
                 PriorityColor[priority],
                 true, false, false, false,
                 "", ""

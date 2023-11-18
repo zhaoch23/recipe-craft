@@ -1,4 +1,4 @@
-package com.sakurarealm.recipecraft.material;
+package com.sakurarealm.recipecraft.api.material;
 
 import org.bukkit.ChatColor;
 
@@ -33,6 +33,17 @@ public class TextCompound {
         this.suffix = suffix;
     }
 
+    public TextCompound(String text) {
+        this.text = text;
+        this.color = ChatColor.WHITE;
+        this.bold = false;
+        this.italic = false;
+        this.underlined = false;
+        this.strikethrough = false;
+        this.prefix = "";
+        this.suffix = "";
+    }
+
     private TextCompound() {
         this.newLineChar = true;
     }
@@ -42,15 +53,11 @@ public class TextCompound {
     }
 
     public String getText() {
-        return null;
+        return text;
     }
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public ChatColor getColor() {
-        return this.color;
     }
 
     public void setColor(ChatColor color) {
