@@ -5,15 +5,14 @@ import com.sakurarealm.recipecraft.api.material.RPGMaterialParser;
 import com.sakurarealm.recipecraft.api.material.RPGMaterialTag;
 import com.sakurarealm.recipecraft.api.material.TextCompound;
 import com.sakurarealm.recipecraft.api.material.enums.EnumRarity;
-import com.sakurarealm.recipecraft.utils.LoreBuilder;
+import com.sakurarealm.recipecraft.api.material.lore.LoreStringBuilder;
+import com.sakurarealm.recipecraft.recipecraft.material.utils.LoreBuilder;
+import com.sakurarealm.recipecraft.recipecraft.material.utils.LoreField;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
 
@@ -44,20 +43,20 @@ public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
 
     public SimpleMaterial(String name, EnumRarity rarity, org.bukkit.Material bukkitMaterial, String... descriptions) {
         this.name = name;
-        this.displayName = new TextCompound(name, ChatColor.GREEN, false, false, false, false, "", "");
+        this.displayName = new TextCompound(name, ChatColor.GREEN, false, false, false, false);
         this.rarity = rarity;
         this.bukkitMaterial = bukkitMaterial;
         if (descriptions.length > 0) {
-            addDescription(new TextCompound(descriptions[0], ChatColor.GRAY, false, false, false, false, "", ""));
+            addDescription(new TextCompound(descriptions[0], ChatColor.GRAY, false, false, false, false));
         }
         if (descriptions.length > 1) {
-            addShiftDescription(new TextCompound(descriptions[1], ChatColor.GRAY, false, false, false, false, "", ""));
+            addShiftDescription(new TextCompound(descriptions[1], ChatColor.GRAY, false, false, false, false));
         }
         if (descriptions.length > 2) {
-            addCtrlDescription(new TextCompound(descriptions[2], ChatColor.GRAY, false, false, false, false, "", ""));
+            addCtrlDescription(new TextCompound(descriptions[2], ChatColor.GRAY, false, false, false, false));
         }
         if (descriptions.length > 3) {
-            addHiddenDescription(new TextCompound(descriptions[3], ChatColor.GRAY, false, false, false, false, "", ""));
+            addHiddenDescription(new TextCompound(descriptions[3], ChatColor.GRAY, false, false, false, false));
         }
     }
 
@@ -78,8 +77,7 @@ public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
                 new TextCompound(
                         "test description",
                         ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
+                        true, false, false, false
                 ),
                 EnumRarity.One,
                 org.bukkit.Material.COAL
@@ -89,32 +87,28 @@ public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
                 new TextCompound(
                         "test description",
                         ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
+                        true, false, false, false
                 )
         );
         material.addShiftDescription(
                 new TextCompound(
                         "shift description",
                         ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
+                        false, false, false, false
                 )
         );
         material.addCtrlDescription(
                 new TextCompound(
                         "ctrl description",
                         ChatColor.WHITE,
-                        false, false, true, false,
-                        "", ""
+                        false, false, true, false
                 )
         );
         material.addHiddenDescription(
                 new TextCompound(
                         "hidden description",
                         ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
+                        false, false, false, false
                 )
         );
         return material;
@@ -246,20 +240,6 @@ public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
         return Optional.empty();
     }
 
-    protected void descriptionsToLore(String flag, Optional<TextCompound[]> descriptions, List<String> lore) {
-        if (descriptions.isPresent()) {
-            lore.add("");
-            if (flag != null)
-                lore.add(flag);
-
-            LoreBuilder loreBuilder = new LoreBuilder(30);
-            for (TextCompound textCompound : descriptions.get()) {
-                loreBuilder.appendText(textCompound);
-            }
-            lore.addAll(loreBuilder.toLore());
-        }
-    }
-
     @Override
     public Optional<RPGMaterial> parse(ItemStack itemStack) {
         return Optional.empty();
@@ -310,6 +290,54 @@ public class SimpleMaterial implements RPGMaterial, RPGMaterialParser {
         itemStack.setItemMeta(itemMeta);
 
         return Optional.of(itemStack);
+    }
+
+    protected LoreBuilder getLore() {
+        LoreBuilder loreBuilder = new LoreBuilder();
+        StringBuilder tags = new StringBuilder();
+        for (RPGMaterialTag materialTag : getTags()) {
+            tags.append(materialTag.getDisplayName().toString()).append(" ");
+        }
+        loreBuilder.append(new LoreField("Tags", Collections.singletonList(tags.toString())));
+
+        if (description != null) {
+            loreBuilder.append(descriptionsToLore(null, getDescription().get()));
+        }
+        if (shiftDescription != null) {
+            loreBuilder.append(descriptionsToLore("shift", getShiftDescription().get()));
+        }
+        if (ctrlDescription != null) {
+            loreBuilder.append(descriptionsToLore("ctrl", getCtrlDescription().get()));
+        }
+        if (hiddenDescription != null) {
+            loreBuilder.append(descriptionsToLore("hidden", getHiddenDescription().get()));
+        }
+        
+        return loreBuilder;
+    }
+
+    protected String getTitle() {
+        return getRarity().getDisplayName() + "◇" + getDisplayName().toString();
+    }
+
+    protected LoreField descriptionsToLore(String flag, TextCompound[] descriptions) {
+        List<String> lore = new ArrayList<>();
+        if (flag != null) {
+            LoreStringBuilder loreStringBuilder = new LoreStringBuilder(30, LoreStringBuilder.Alignment.CENTER);
+            loreStringBuilder.appendText(new TextCompound(
+                    flag,
+                    ChatColor.DARK_AQUA,
+                    true, false, false, false
+            ));
+            lore.addAll(loreStringBuilder.toLore());
+        }
+
+        LoreStringBuilder loreStringBuilder = new LoreStringBuilder(30);
+        for (TextCompound textCompound : descriptions) {
+            loreStringBuilder.appendText(textCompound);
+        }
+        lore.addAll(loreStringBuilder.toLore());
+        return new LoreField(flag, lore);
     }
 
 }

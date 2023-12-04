@@ -3,7 +3,7 @@ package com.sakurarealm.recipecraft.recipecraft.material;
 import com.sakurarealm.recipecraft.api.material.*;
 import com.sakurarealm.recipecraft.api.material.enums.EnumRarity;
 import com.sakurarealm.recipecraft.api.material.enums.EnumSlot;
-import com.sakurarealm.recipecraft.utils.LoreBuilder;
+import com.sakurarealm.recipecraft.api.material.lore.LoreStringBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -118,14 +118,14 @@ public class SimpleArmorTool extends SimpleAttributeMaterial implements RPGArmor
         itemMeta.setDisplayName(getDisplayName().toString());
 
         // Rarity
-        LoreBuilder loreBuilder = new LoreBuilder(30, LoreBuilder.Alignment.CENTER);
-        loreBuilder.appendText(getRarity().getDisplayName())
+        LoreStringBuilder loreStringBuilder = new LoreStringBuilder(30, LoreStringBuilder.Alignment.CENTER);
+        loreStringBuilder.appendText(getRarity().getDisplayName())
                 .newLine();
         for (EnumSlot slot : getSlots()) {
-            loreBuilder.appendText(slot.getDisplayName());
+            loreStringBuilder.appendText(slot.getDisplayName());
 
         }
-        List<String> lore = new ArrayList<>(loreBuilder.toLore());
+        List<String> lore = new ArrayList<>(loreStringBuilder.toLore());
 
         // Tags
         StringBuilder tags = new StringBuilder();

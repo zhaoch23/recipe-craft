@@ -38,6 +38,6 @@ public enum EnumRarity { // TODO: 2023/11/14 zhaoch23 we will rename these later
     }
 
     public TextCompound getDisplayName() {
-        return new TextCompound(String.valueOf(this), ChatColor.WHITE, false, false, false, false, "", "");
+        return new TextCompound(String.valueOf(this), ChatColor.WHITE, false, false, false, false);
     }
 }

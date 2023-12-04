@@ -40,8 +40,7 @@ public class RPGMaterialTag {
         return new TextCompound(
                 "[" + name + "]",
                 PriorityColor[priority],
-                true, false, false, false,
-                "", ""
+                true, false, false, false
         );
     }
 

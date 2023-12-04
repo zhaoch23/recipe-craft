@@ -14,7 +14,11 @@ public interface RPGMaterialParser {
      */
     Optional<RPGMaterial> parse(ItemStack itemStack);
 
+    void parse(ItemStack itemStack, RPGMaterial material);
+
     Optional<RPGMaterial> parse(String string);
+
+    void parse(String string, RPGMaterial material);
 
     Optional<ItemStack> toItemStack(RPGMaterial material);
 

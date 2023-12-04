@@ -1,4 +1,4 @@
-package com.sakurarealm.recipecraft.utils;
+package com.sakurarealm.recipecraft.api.material.lore;
 
 import com.sakurarealm.recipecraft.api.material.TextCompound;
 import org.bukkit.ChatColor;
@@ -6,39 +6,37 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoreBuilder {
+public class LoreStringBuilder {
 
     private final List<String> lore = new ArrayList<>();
     private final int lineSize;
     private final Alignment alignment;
     private StringBuilder currentLine;
 
-    public LoreBuilder(int lineSize, Alignment alignment) {
+    public LoreStringBuilder(int lineSize, Alignment alignment) {
         this.lineSize = lineSize;
         this.currentLine = new StringBuilder();
         this.alignment = alignment;
     }
 
-    public LoreBuilder(int lineSize) {
+    public LoreStringBuilder(int lineSize) {
         this(lineSize, Alignment.LEFT);
     }
 
-    public LoreBuilder appendText(TextCompound textCompound) {
+    public LoreStringBuilder appendText(TextCompound textCompound) {
         if (textCompound.isNewLineChar()) {
             return newLine();
         }
-        appendText("", textCompound.getPrefix());
         appendText(textCompound.getTextFormatCode(), textCompound.getText());
-        appendText("", textCompound.getSuffix());
         return this;
     }
 
-    public LoreBuilder newLine() {
+    public LoreStringBuilder newLine() {
         addLine();
         return this;
     }
 
-    public LoreBuilder emptyLines(int lines) {
+    public LoreStringBuilder emptyLines(int lines) {
         for (int i = 0; i < lines + 1; i++) {
             newLine();
         }

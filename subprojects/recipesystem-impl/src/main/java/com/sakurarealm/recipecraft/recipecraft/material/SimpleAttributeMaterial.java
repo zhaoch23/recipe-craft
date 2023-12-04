@@ -34,8 +34,7 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
                 new TextCompound(
                         "test description",
                         ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
+                        true, false, false, false
                 ),
                 EnumRarity.One,
                 org.bukkit.Material.COAL
@@ -45,32 +44,28 @@ public class SimpleAttributeMaterial extends SimpleMaterial implements RPGAttrib
                 new TextCompound(
                         "test description",
                         ChatColor.WHITE,
-                        true, false, false, false,
-                        "", ""
+                        true, false, false, false
                 )
         );
         material.addShiftDescription(
                 new TextCompound(
                         "shift description",
                         ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
+                        false, false, false, false
                 )
         );
         material.addCtrlDescription(
                 new TextCompound(
                         "ctrl description",
                         ChatColor.WHITE,
-                        false, false, true, false,
-                        "", ""
+                        false, false, true, false
                 )
         );
         material.addHiddenDescription(
                 new TextCompound(
                         "hidden description",
                         ChatColor.WHITE,
-                        false, false, false, false,
-                        "", ""
+                        false, false, false, false
                 )
         );
 
